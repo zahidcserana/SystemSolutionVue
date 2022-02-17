@@ -1,0 +1,55 @@
+.input-errors {
+  color: red;
+  font-size: 10px;
+}
+.status {
+  text-transform: capitalize;
+}
+.PaginationControl {
+  line-height: 1.25;
+  position: relative;
+  border: 1px solid #dee2e6;
+  font-size: 0.875rem;
+  display: flex;
+  width: 36px;
+  height: 36px;
+  margin: 0 3px;
+  padding: 0;
+  border-radius: 50% !important;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border-color: cadetblue;
+  background-color: cadetblue;
+}
+.Page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px !important;
+  height: 36px !important;
+  margin: 0 3px;
+  color: #5e72e4;
+  background-color: transparent;
+  font-size: 14px;
+  border-radius: 50% !important;
+  box-sizing: border-box;
+  border-color: transparent;
+  cursor: pointer;
+  position: relative;
+  display: block;
+  margin-left: -1px;
+  padding: 0.5rem 0.75rem;
+  color: #8898aa;
+  border: 1px solid #dee2e6 !important;
+  background-color: #fff;
+  outline: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.Page-active {
+  color: #fff !important;
+  border: 1px solid #dedede;
+}

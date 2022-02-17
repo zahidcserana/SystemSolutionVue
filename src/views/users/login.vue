@@ -167,7 +167,7 @@
         <div class="row justify-content-center">
           <div class="col-lg-5 col-md-7">
             <div class="card bg-secondary border-0 mb-0">
-              <div class="card-header bg-transparent pb-5">
+              <!-- <div class="card-header bg-transparent pb-5">
                 <div class="text-muted text-center mt-2 mb-3">
                   <small>Sign in with</small>
                 </div>
@@ -185,42 +185,56 @@
                     <span class="btn-inner--text">Google</span>
                   </a>
                 </div>
-              </div>
+              </div> -->
               <div class="card-body px-lg-5 py-lg-5">
                 <div class="text-center text-muted mb-4">
-                  <small>Or sign in with credentials</small>
+                  <small>Please enter your valid credentials</small>
                 </div>
-                <form role="form">
+                <div v-if="fetchError" class="alert alert-danger">
+                  <button type="button" aria-hidden="true" data-dismiss="alert" class="close">
+                    <i class="nc-icon nc-simple-remove"></i>
+                  </button>
+                  <span><b> Error: </b> {{ fetchError }}</span>
+                </div>
+                <form role="form" @submit.prevent="submitForm">
                   <div class="form-group mb-3">
                     <div
                       class="input-group input-group-merge input-group-alternative"
                     >
-                      <div class="input-group-prepend">
+                      <div class="input-group-prepend" :class="{ error: v$.login.email.$errors.length }">
                         <span class="input-group-text"
                           ><i class="ni ni-email-83"></i
                         ></span>
                       </div>
                       <input
+                        v-model="login.email"
                         class="form-control"
                         placeholder="Email"
                         type="email"
                       />
+                    </div>
+                    <div class="input-errors" v-for="error of v$.login.email.$errors" :key="error.$uid">
+                      <div class="error-msg">{{ error.$message }}</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <div
                       class="input-group input-group-merge input-group-alternative"
                     >
-                      <div class="input-group-prepend">
+                      <div class="input-group-prepend" :class="{ error: v$.login.password.$errors.length }">
                         <span class="input-group-text"
                           ><i class="ni ni-lock-circle-open"></i
                         ></span>
                       </div>
                       <input
+                        v-model="login.password"
                         class="form-control"
                         placeholder="Password"
                         type="password"
                       />
+                    </div>
+                    <div class="input-errors" v-for="error of v$.login.password.$errors" :key="error.$uid">
+                      <div class="error-msg">{{ error.$message }}</div>
                     </div>
                   </div>
                   <div
@@ -236,7 +250,12 @@
                     </label>
                   </div>
                   <div class="text-center">
-                    <button type="button" class="btn btn-primary my-4">
+                    <Circle8 v-if="loading" />
+                    <button
+                      v-if="!loading"
+                      type="submit"
+                      class="btn btn-primary my-4"
+                    >
                       Sign in
                     </button>
                   </div>
@@ -320,14 +339,74 @@
 
 <script>
 import $ from 'jquery'
+import axios from 'axios'
+import { env, getToken } from '@/utils/auth'
+import useVuelidate from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
+import { Circle8 } from 'vue-loading-spinner'
 
 export default {
   name: 'Login',
-  components: {},
+  components: { Circle8 },
   mounted () {
+    if (getToken()) {
+      this.$router.push('/')
+    }
     $(document).ready(function () {
       $('body').addClass('bg-default')
     })
+  },
+  setup: () => ({ v$: useVuelidate() }),
+  data () {
+    return {
+      loading: false,
+      login: {
+        email: undefined,
+        password: undefined
+      },
+      fetchError: null
+    }
+  },
+  validations () {
+    return {
+      login: {
+        email: { required, email },
+        password: { required }
+      }
+    }
+  },
+  methods: {
+    async submitForm () {
+      const result = await this.v$.$validate()
+      if (result) {
+        axios
+          .post(env.api_url + 'login', this.login)
+          .then(response => {
+            const result = response.data
+            if (result.success) {
+              this.loading = false
+              this.fetchError = null
+              localStorage.setItem('token', result.data.token)
+              localStorage.setItem(
+                'userInfo',
+                JSON.stringify(result.data.user)
+              )
+              this.$router.push('/')
+            } else {
+              this.loading = false
+              this.showError('Wrong user or password')
+            }
+          })
+          .catch(error => {
+            this.loading = false
+            console.log(error)
+            this.showError('Something went wrong!')
+          })
+      }
+    },
+    showError (msg) {
+      this.fetchError = msg
+    }
   }
 }
 </script>

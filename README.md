@@ -1,6 +1,13 @@
-# new
-- Login page
-- 
+## Client Management System
+
+Manage clients, invoices & payments and make reports
+
+### Next task list
+
+- **[Invoice](Search in list: by customer, date)**
+- **[Invoice](Summary)**
+- **[Customer](list from search by term with select2)**
+- **[Payment](CRUD)**
 
 ## Project setup
 ```
@@ -24,3 +31,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+## Formatter
+
+- Vue: Prettier

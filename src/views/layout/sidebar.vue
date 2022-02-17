@@ -52,6 +52,12 @@
               </router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" to="/invoice">
+                <i class="ni ni-bullet-list-67 text-default"></i>
+                <span class="nav-link-text">Invoice</span>
+              </router-link>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="examples/login.html">
                 <i class="ni ni-key-25 text-info"></i>
                 <span class="nav-link-text">Login</span>

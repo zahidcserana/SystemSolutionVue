@@ -334,7 +334,7 @@
               <div class="dropdown-divider"></div>
               <router-link class="dropdown-item" to="/login">
                 <i class="ni ni-user-run"></i>
-                <span class="nav-link-text">Logout</span>
+                <span class="nav-link-text" @click="logout">Logout</span>
               </router-link>
             </div>
           </li>
@@ -349,6 +349,13 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  methods: {
+    logout () {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userInfo')
+      this.$router.push('/login')
+    }
   }
 }
 </script>
