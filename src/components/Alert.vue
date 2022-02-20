@@ -1,6 +1,6 @@
 <template>
   <div class="alert-msg">
-    <div v-if="fetchError" class="alert alert-danger">
+    <div v-if="errorMsg" class="alert alert-danger">
       <button
         type="button"
         aria-hidden="true"
@@ -9,7 +9,7 @@
       >
         <i class="nc-icon nc-simple-remove"></i>
       </button>
-      <span><b> Error: </b> {{ fetchError }}</span>
+      <span><b> Error: </b> {{ errorMsg }}</span>
     </div>
     <div v-if="successMsg" class="alert alert-info">
       <button
@@ -29,7 +29,7 @@
 export default {
   name: 'Alert',
   props: {
-    fetchError: String,
+    errorMsg: String,
     successMsg: String
   }
 }
