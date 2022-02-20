@@ -11,80 +11,82 @@
   </Header>
   <Content>
     <template #content>
-      <div class="col">
-        <div class="card">
-          <!-- Card header -->
-          <div class="card-header border-0">
-            <h3 class="mb-0">Invoice List</h3>
-          </div>
-          <!-- Light table -->
-          <div class="table-responsive">
-            <table class="table align-items-center table-flush">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col" class="sort" data-sort="name">Serial</th>
-                  <th scope="col" class="sort" data-sort="name">Customer</th>
-                  <th scope="col" class="sort" data-sort="budget">Amount</th>
-                  <th scope="col">Date</th>
-                  <th scope="col" class="sort" data-sort="status">Status</th>
-                  <th scope="col" class="text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody class="list">
-                <tr v-for="(row, index) in invoices" :key="index">
-                  <td class="budget">
-                    <router-link :to="`/invoice/${row.id}`">{{
-                      index + 1
-                    }}</router-link>
-                  </td>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div>
-                        {{ row.customer.name }}
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <!-- Card header -->
+            <div class="card-header border-0">
+              <h3 class="mb-0">Invoice List</h3>
+            </div>
+            <!-- Light table -->
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" class="sort" data-sort="name">Serial</th>
+                    <th scope="col" class="sort" data-sort="name">Customer</th>
+                    <th scope="col" class="sort" data-sort="budget">Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col" class="sort" data-sort="status">Status</th>
+                    <th scope="col" class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="list">
+                  <tr v-for="(row, index) in invoices" :key="index">
+                    <td class="budget">
+                      <router-link :to="`/invoice/${row.id}`">{{
+                        index + 1
+                      }}</router-link>
+                    </td>
+                    <th scope="row">
+                      <div class="media align-items-center">
+                        <div>
+                          {{ row.customer.name }}
+                        </div>
+                        <div class="media-body">
+                          <span class="name mb-0 text-sm">
+                            &nbsp;({{ row.customer.balance }})
+                          </span>
+                        </div>
                       </div>
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">
-                          &nbsp;({{ row.customer.balance }})
-                        </span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="budget">
-                    {{ row.amount }}
-                  </td>
-                  <td class="budget">
-                    {{ row.for_date }}
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      <i class="bg-warning"></i>
-                      <span class="status">{{ row.status }}</span>
-                    </span>
-                  </td>
-                  <td class="text-right">
-                    <button
-                      class="btn btn-icon btn-danger"
-                      @click="remove(row)"
-                    >
-                      <span class="btn-inner--icon"
-                        ><i class="ni ni-fat-remove"></i
-                      ></span>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- Card footer -->
-          <div class="card-footer py-4">
-            <v-pagination
-              class="pagination justify-content-end mb-0"
-              active-color="#5e72e4"
-              v-model="page"
-              :range-size="1"
-              :pages="pageCount"
-              @update:modelValue="updateHandler"
-            />
+                    </th>
+                    <td class="budget">
+                      {{ row.amount }}
+                    </td>
+                    <td class="budget">
+                      {{ row.for_date }}
+                    </td>
+                    <td>
+                      <span class="badge badge-dot mr-4">
+                        <i class="bg-warning"></i>
+                        <span class="status">{{ row.status }}</span>
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <button
+                        class="btn btn-icon btn-danger"
+                        @click="remove(row)"
+                      >
+                        <span class="btn-inner--icon"
+                          ><i class="ni ni-fat-remove"></i
+                        ></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Card footer -->
+            <div class="card-footer py-4">
+              <v-pagination
+                class="pagination justify-content-end mb-0"
+                active-color="#5e72e4"
+                v-model="page"
+                :range-size="1"
+                :pages="pageCount"
+                @update:modelValue="updateHandler"
+              />
+            </div>
           </div>
         </div>
       </div>

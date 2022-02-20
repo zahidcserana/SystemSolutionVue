@@ -1,8 +1,6 @@
 <template>
   <div class="container-fluid mt--6">
-    <div class="row">
-        <slot name="content"></slot>
-    </div>
+    <slot name="content"></slot>
     <Footer />
   </div>
 </template>
