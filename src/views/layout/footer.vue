@@ -5,10 +5,10 @@
         <div class="copyright text-center  text-lg-left  text-muted">
           &copy; 2020
           <a
-            href="https://www.creative-tim.com"
+            :href="company.website"
             class="font-weight-bold ml-1"
             target="_blank"
-            >Creative Tim</a
+            >{{ company.name }}</a
           >
         </div>
       </div>
@@ -21,7 +21,7 @@
               href="https://www.creative-tim.com"
               class="nav-link"
               target="_blank"
-              >Creative Tim</a
+              >{{ company.name }}</a
             >
           </li>
           <li class="nav-item">
@@ -57,6 +57,7 @@
 <script>
 export default {
   name: 'HelloWorld',
+  inject: ['company'],
   props: {
     msg: String
   }

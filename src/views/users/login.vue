@@ -340,10 +340,13 @@
 <script>
 import $ from 'jquery'
 import axios from 'axios'
-import { env, getToken } from '@/utils/auth'
+import { getToken } from '@/utils/auth'
 import useVuelidate from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
 import { Circle8 } from 'vue-loading-spinner'
+import { config } from '@/utils/config'
+
+const url = config.api_url
 
 export default {
   name: 'Login',
@@ -380,7 +383,7 @@ export default {
       const result = await this.v$.$validate()
       if (result) {
         axios
-          .post(env.api_url + 'login', this.login)
+          .post(url + 'login', this.login)
           .then(response => {
             const result = response.data
             if (result.success) {

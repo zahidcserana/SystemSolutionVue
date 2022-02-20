@@ -1,9 +1,11 @@
 import request from '@/utils/request'
-import { env } from '@/utils/auth'
+import { config } from '../utils/config'
+
+const url = config.api_url
 
 export function storeInvoice (data) {
   return request({
-    url: `${env.api_url}invoice`,
+    url: `${url}invoice`,
     method: 'post',
     data
   })
@@ -11,7 +13,7 @@ export function storeInvoice (data) {
 
 export function updateInvoice (data) {
   return request({
-    url: `${env.api_url}invoice/${data.id}`,
+    url: `${url}invoice/${data.id}`,
     method: 'put',
     data
   })
@@ -19,7 +21,7 @@ export function updateInvoice (data) {
 
 export function invoices (data) {
   return request({
-    url: `${env.api_url}invoice`,
+    url: `${url}invoice`,
     method: 'get',
     params: data
   })
@@ -27,14 +29,14 @@ export function invoices (data) {
 
 export function removeInvoice (data) {
   return request({
-    url: `${env.api_url}invoice/${data.id}`,
+    url: `${url}invoice/${data.id}`,
     method: 'delete'
   })
 }
 
 export function invoice (dataId) {
   return request({
-    url: `${env.api_url}invoice/${dataId}`,
+    url: `${url}invoice/${dataId}`,
     method: 'get'
   })
 }
@@ -42,14 +44,14 @@ export function invoice (dataId) {
 // usused
 export function invoiceList () {
   return request({
-    url: `${env.api_url}/invoices/list`,
+    url: `${url}/invoices/list`,
     method: 'get'
   })
 }
 
 export function requestSchedule (data) {
   return request({
-    url: `${env.api_url}/invoice-schedule/request`,
+    url: `${url}/invoice-schedule/request`,
     method: 'post',
     data
   })
@@ -57,7 +59,7 @@ export function requestSchedule (data) {
 
 export function appointmentList (data) {
   return request({
-    url: `${env.api_url}/appointments`,
+    url: `${url}/appointments`,
     method: 'get',
     params: data
   })
@@ -65,14 +67,14 @@ export function appointmentList (data) {
 
 export function scheduleList (invoiceId) {
   return request({
-    url: `${env.api_url}/invoice-schedule-list/${invoiceId}`,
+    url: `${url}/invoice-schedule-list/${invoiceId}`,
     method: 'get'
   })
 }
 
 export function invoiceSlot (invoiceId) {
   return request({
-    url: `${env.api_url}/invoice-slot/${invoiceId}`,
+    url: `${url}/invoice-slot/${invoiceId}`,
     method: 'get'
   })
 }
