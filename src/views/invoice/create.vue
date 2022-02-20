@@ -89,6 +89,7 @@
             </div>
           </div>
           <div class="card-body">
+            <alert :errorMsg="errorMsg" :successMsg="successMsg" />
             <form role="form" @submit.prevent="submit">
               <h6 class="heading-small text-muted mb-4">Invoice information</h6>
               <div class="pl-lg-4">
@@ -200,6 +201,7 @@ import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { Circle8 } from 'vue-loading-spinner'
 import { ref } from 'vue'
+import Alert from '@/components/Alert'
 
 export default {
   name: 'HelloWorld',
@@ -207,6 +209,7 @@ export default {
     msg: String
   },
   components: {
+    Alert,
     Header,
     Content,
     Datepicker,
@@ -239,7 +242,8 @@ export default {
         amount: '',
         paid: '0'
       },
-      fetchError: null
+      errorMsg: null,
+      successMsg: null
     }
   },
   created () {
@@ -276,22 +280,27 @@ export default {
           .then(response => {
             if (response.success) {
               this.loading = false
-              this.fetchError = null
+              this.alert(null, response.message)
               this.$router.push('/invoice')
             } else {
               this.loading = false
-              this.showError(response.error)
+              this.alert(response.error)
             }
           })
           .catch(err => {
             this.loading = false
             console.log(err)
-            this.showError('Something went wrong!')
+            this.alert('Something went wrong!')
           })
       }
     },
-    showError (msg) {
-      this.fetchError = msg
+    alert (error = null, success = null) {
+      this.errorMsg = error
+      this.successMsg = success
+      setTimeout(() => {
+        this.errorMsg = null
+        this.successMsg = null
+      }, 2000)
     }
   }
 }

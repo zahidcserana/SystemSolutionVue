@@ -91,23 +91,7 @@
             </div>
           </div>
           <div class="card-body">
-            <div v-if="fetchError" class="alert alert-danger">
-              <button type="button" aria-hidden="true" data-dismiss="alert" class="close">
-                <i class="nc-icon nc-simple-remove"></i>
-              </button>
-              <span><b> Error: </b> {{ fetchError }}</span>
-            </div>
-            <div v-if="success.alert" class="alert alert-info">
-              <button
-                type="button"
-                aria-hidden="true"
-                data-dismiss="alert"
-                class="close"
-              >
-                <i class="nc-icon nc-simple-remove"></i>
-              </button>
-              <span><b> Success: </b> {{ success.message }}</span>
-            </div>
+            <alert :errorMsg="errorMsg" :successMsg="successMsg" />
             <form role="form" @submit.prevent="submit">
               <h6 class="heading-small text-muted mb-4">Invoice information</h6>
               <div class="pl-lg-4">
@@ -252,6 +236,7 @@ import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { Circle8 } from 'vue-loading-spinner'
 import { ref } from 'vue'
+import Alert from '@/components/Alert'
 
 export default {
   name: 'HelloWorld',
@@ -259,6 +244,7 @@ export default {
     msg: String
   },
   components: {
+    Alert,
     Header,
     Content,
     Datepicker,
@@ -276,7 +262,6 @@ export default {
   },
   data () {
     return {
-      success: { alert: false, message: '' },
       loading: false,
       customers: null,
       search: '',
@@ -294,7 +279,8 @@ export default {
         paid: '0',
         status: ''
       },
-      fetchError: null
+      errorMsg: null,
+      successMsg: null
     }
   },
   created () {
@@ -351,22 +337,26 @@ export default {
           .then(response => {
             if (response.success) {
               this.loading = false
-              this.success.alert = true
-              this.success.message = response.message
+              this.alert(null, response.message)
             } else {
               this.loading = false
-              this.showError(response.error)
+              this.alert(response.error)
             }
           })
           .catch(err => {
             this.loading = false
             console.log(err)
-            this.showError('Something went wrong!')
+            this.alert('Something went wrong!')
           })
       }
     },
-    showError (msg) {
-      this.fetchError = msg
+    alert (error = null, success = null) {
+      this.errorMsg = error
+      this.successMsg = success
+      setTimeout(() => {
+        this.errorMsg = null
+        this.successMsg = null
+      }, 2000)
     }
   }
 }

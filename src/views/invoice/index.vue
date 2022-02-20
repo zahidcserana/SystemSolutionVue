@@ -33,7 +33,9 @@
               <tbody class="list">
                 <tr v-for="(row, index) in invoices" :key="index">
                   <td class="budget">
-                    <router-link :to="`/invoice/${ row.id }`">{{ index + 1 }}</router-link>
+                    <router-link :to="`/invoice/${row.id}`">{{
+                      index + 1
+                    }}</router-link>
                   </td>
                   <th scope="row">
                     <div class="media align-items-center">
@@ -158,11 +160,13 @@ export default {
       this.getInvoices()
     },
     remove (invoice) {
-      removeInvoice(invoice).then(response => {
-        if (response.success) {
-          this.getInvoices()
-        }
-      })
+      if (confirm('Do you really want to delete?')) {
+        removeInvoice(invoice).then(response => {
+          if (response.success) {
+            this.getInvoices()
+          }
+        })
+      }
     }
   }
 }
