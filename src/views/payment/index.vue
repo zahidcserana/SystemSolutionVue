@@ -2,7 +2,7 @@
   <Header>
     <template #sidelink>
       <div class="col-lg-6 col-5 text-right">
-        <router-link class="btn btn-sm btn-neutral" to="/invoice/create"
+        <router-link class="btn btn-sm btn-neutral" to="/payment/create"
           >New</router-link
         >
         <a href="#" class="btn btn-sm btn-neutral">Edit</a>
@@ -16,25 +16,27 @@
           <div class="card">
             <!-- Card header -->
             <div class="card-header border-0">
-              <h3 class="mb-0">Invoice List</h3>
+              <h3 class="mb-0">Payment List</h3>
             </div>
             <!-- Light table -->
             <div class="table-responsive">
               <table class="table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
-                    <th scope="col" class="sort" data-sort="name">Serial</th>
+                    <th scope="col" class="sort" data-sort="name">No</th>
                     <th scope="col" class="sort" data-sort="name">Customer</th>
                     <th scope="col" class="sort" data-sort="budget">Amount</th>
+                    <th scope="col" class="sort" data-sort="budget">Adjust</th>
+                    <th scope="col" class="sort" data-sort="budget">Due</th>
                     <th scope="col">Date</th>
                     <th scope="col" class="sort" data-sort="status">Status</th>
                     <th scope="col" class="text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody class="list">
-                  <tr v-for="(row, index) in invoices" :key="index">
+                  <tr v-for="(row, index) in payments" :key="index">
                     <td class="budget">
-                      <router-link :to="`/invoice/${row.id}`">{{
+                      <router-link :to="`/payment/${row.id}`">{{
                         index + 1
                       }}</router-link>
                     </td>
@@ -50,12 +52,10 @@
                         </div>
                       </div>
                     </th>
-                    <td class="budget">
-                      {{ row.amount }}
-                    </td>
-                    <td class="budget">
-                      {{ row.for_date }}
-                    </td>
+                    <td>{{ row.amount }}</td>
+                    <td>{{ row.adjust }}</td>
+                    <td>{{ row.dues }}</td>
+                    <td>{{ row.payment_date }}</td>
                     <td>
                       <span class="badge badge-dot mr-4">
                         <i class="bg-warning"></i>
@@ -98,7 +98,7 @@
 import Header from '@/views/layout/header.vue'
 import Content from '@/views/layout/content.vue'
 import { customerList } from '@/api/customer'
-import { invoices, removeInvoice } from '@/api/invoice'
+import { payments, removePayment } from '@/api/payment'
 import moment from 'moment'
 import { ref } from 'vue'
 
@@ -118,7 +118,7 @@ export default {
   data () {
     return {
       customers: null,
-      invoices: [],
+      payments: [],
       term: '',
       pageCount: 1,
       query: {
@@ -130,7 +130,7 @@ export default {
   },
   created () {
     this.getCustomers()
-    this.getInvoices()
+    this.getPayments()
   },
   methods: {
     getCustomers () {
@@ -142,14 +142,14 @@ export default {
           console.log(err)
         })
     },
-    getInvoices () {
-      invoices(this.query)
+    getPayments () {
+      payments(this.query)
         .then(response => {
-          this.invoices = response.data
+          this.payments = response.data
           this.pageCount = response.meta.last_page
-          this.invoices.forEach(element => {
-            element.for_date = moment(String(element.for_date)).format(
-              'MMM, YYYY'
+          this.payments.forEach(element => {
+            element.payment_date = moment(String(element.payment_date)).format(
+              'MMM d, YYYY'
             )
           })
         })
@@ -159,13 +159,13 @@ export default {
     },
     updateHandler () {
       this.query.page = this.page
-      this.getInvoices()
+      this.getPayments()
     },
-    remove (invoice) {
+    remove (payment) {
       if (confirm('Do you really want to delete?')) {
-        removeInvoice(invoice).then(response => {
+        removePayment(payment).then(response => {
           if (response.success) {
-            this.getInvoices()
+            this.getPayments()
           }
         })
       }

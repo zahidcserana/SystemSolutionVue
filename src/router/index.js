@@ -67,6 +67,43 @@ const routes = [
         name: 'invoice create'
       }
     ]
+  },
+  {
+    path: '/customer',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/customer/index'),
+        name: 'customers'
+      },
+      {
+        path: ':id',
+        component: () => import('@/views/customer/view'),
+        name: 'customer'
+      }
+    ]
+  },
+  {
+    path: '/payment',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/payment/index'),
+        name: 'payments'
+      },
+      {
+        path: ':id',
+        component: () => import('@/views/payment/edit'),
+        name: 'payment'
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/payment/create'),
+        name: 'payment create'
+      }
+    ]
   }
 ]
 

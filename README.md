@@ -4,7 +4,7 @@ Manage clients, invoices & payments and make reports
 
 ### Next task list
 
-- **[Invoice](get cust info)**
+- **[Invoice create](get customer info)**
 - **[Invoice](Search in list: by customer, date)**
 - **[Invoice](Summary)**
 - **[Customer](list from search by term with select2)**

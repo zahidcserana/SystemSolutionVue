@@ -3,6 +3,21 @@ import { config } from '../utils/config'
 
 const url = config.api_url
 
+export function customers (data) {
+  return request({
+    url: `${url}customer`,
+    method: 'get',
+    params: data
+  })
+}
+
+export function customer (dataId) {
+  return request({
+    url: `${url}customer/${dataId}`,
+    method: 'get'
+  })
+}
+
 export function view (id) {
   return request({
     url: `${url}customers/${id}`,

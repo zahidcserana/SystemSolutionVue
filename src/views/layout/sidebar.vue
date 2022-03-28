@@ -26,13 +26,13 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/users/create">
+              <router-link class="nav-link" to="/payment">
                 <i class="ni ni-planet text-orange"></i>
                 <span class="nav-link-text">Payments</span>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/users">
+              <router-link class="nav-link" to="/customer">
                 <i class="ni ni-single-02 text-yellow"></i>
                 <span class="nav-link-text">Customers</span>
               </router-link>

@@ -383,7 +383,7 @@ export default {
       const result = await this.v$.$validate()
       if (result) {
         axios
-          .post(url + 'login', this.login)
+          .post(`${url}login`, this.login)
           .then(response => {
             const result = response.data
             if (result.success) {

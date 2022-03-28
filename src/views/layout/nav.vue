@@ -165,7 +165,7 @@
                       <!-- Avatar -->
                       <img
                         alt="Image placeholder"
-                        src="assets/img/theme/team-4.jpg"
+                        src="assets/img/theme/user.png"
                         class="avatar rounded-circle"
                       />
                     </div>
@@ -303,7 +303,7 @@
                 <span class="avatar avatar-sm rounded-circle">
                   <img
                     alt="Image placeholder"
-                    src="assets/img/theme/team-4.jpg"
+                    src="assets/img/theme/user.png"
                   />
                 </span>
                 <div class="media-body  ml-2  d-none d-lg-block">

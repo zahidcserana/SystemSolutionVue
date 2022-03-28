@@ -2,7 +2,7 @@
   <Header>
     <template #sidelink>
       <div class="col-lg-6 col-5 text-right">
-        <router-link class="btn btn-sm btn-neutral" to="/invoice/create"
+        <router-link class="btn btn-sm btn-neutral" to="/customer/create"
           >New</router-link
         >
         <a href="#" class="btn btn-sm btn-neutral">Edit</a>
@@ -16,7 +16,7 @@
           <div class="card">
             <!-- Card header -->
             <div class="card-header border-0">
-              <h3 class="mb-0">Invoice List</h3>
+              <h3 class="mb-0">Customer List</h3>
             </div>
             <!-- Light table -->
             <div class="table-responsive">
@@ -24,51 +24,38 @@
                 <thead class="thead-light">
                   <tr>
                     <th scope="col" class="sort" data-sort="name">Serial</th>
-                    <th scope="col" class="sort" data-sort="name">Customer</th>
-                    <th scope="col" class="sort" data-sort="budget">Amount</th>
-                    <th scope="col">Date</th>
-                    <th scope="col" class="sort" data-sort="status">Status</th>
+                    <th scope="col" class="sort" data-sort="name">Company</th>
+                    <th scope="col" class="sort" data-sort="name">Contact</th>
+                    <th scope="col" class="sort" data-sort="budget">Email</th>
+                    <th scope="col" class="sort" data-sort="budget">Mobile</th>
+                    <th scope="col" class="sort" data-sort="budget">Balance</th>
+                    <th scope="col">From</th>
+                    <th scope="col" class="sort" data-sort="status">Bill Type</th>
                     <th scope="col" class="text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody class="list">
-                  <tr v-for="(row, index) in invoices" :key="index">
-                    <td class="budget">
-                      <router-link :to="`/invoice/${row.id}`">{{
-                        index + 1
-                      }}</router-link>
-                    </td>
-                    <th scope="row">
-                      <div class="media align-items-center">
-                        <div>
-                          {{ row.customer.name }}
-                        </div>
-                        <div class="media-body">
-                          <span class="name mb-0 text-sm">
-                            &nbsp;({{ row.customer.mobile }})
-                          </span>
-                        </div>
-                      </div>
-                    </th>
-                    <td class="budget">
-                      {{ row.amount }}
-                    </td>
-                    <td class="budget">
-                      {{ row.for_date }}
-                    </td>
+                  <tr v-for="(row, index) in customers" :key="index">
+                    <td class="budget"><router-link :to="`/customer/${row.id}`">{{index + 1}}</router-link></td>
+                    <td>{{ row.company_name }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.email }}</td>
+                    <td>{{ row.mobile }}</td>
+                    <td>{{ row.balance }}</td>
+                    <td>{{ row.bill_start_date }}</td>
                     <td>
                       <span class="badge badge-dot mr-4">
                         <i class="bg-warning"></i>
-                        <span class="status">{{ row.status }}</span>
+                        <span class="status">{{ row.billing_type }}</span>
                       </span>
                     </td>
                     <td class="text-right">
                       <button
-                        class="btn btn-icon btn-danger"
-                        @click="remove(row)"
+                        class="btn btn-icon btn-info"
+                        @click="view(row)"
                       >
                         <span class="btn-inner--icon"
-                          ><i class="ni ni-fat-remove"></i
+                          ><i class="ni ni-user-run"></i
                         ></span>
                       </button>
                     </td>
@@ -97,8 +84,7 @@
 <script>
 import Header from '@/views/layout/header.vue'
 import Content from '@/views/layout/content.vue'
-import { customerList } from '@/api/customer'
-import { invoices, removeInvoice } from '@/api/invoice'
+import { customers, customerList } from '@/api/customer'
 import moment from 'moment'
 import { ref } from 'vue'
 
@@ -117,8 +103,8 @@ export default {
   },
   data () {
     return {
-      customers: null,
-      invoices: [],
+      customerList: null,
+      customers: [],
       term: '',
       pageCount: 1,
       query: {
@@ -129,27 +115,27 @@ export default {
     }
   },
   created () {
+    this.getCustomerList()
     this.getCustomers()
-    this.getInvoices()
   },
   methods: {
-    getCustomers () {
+    getCustomerList () {
       customerList(this.term)
         .then(response => {
-          this.customers = response.data
+          this.customerList = response.data
         })
         .catch(err => {
           console.log(err)
         })
     },
-    getInvoices () {
-      invoices(this.query)
+    getCustomers () {
+      customers(this.query)
         .then(response => {
-          this.invoices = response.data
+          this.customers = response.data
           this.pageCount = response.meta.last_page
-          this.invoices.forEach(element => {
-            element.for_date = moment(String(element.for_date)).format(
-              'MMM, YYYY'
+          this.customers.forEach(element => {
+            element.bill_start_date = moment(String(element.bill_start_date)).format(
+              'MMM d, YYYY'
             )
           })
         })
@@ -159,16 +145,10 @@ export default {
     },
     updateHandler () {
       this.query.page = this.page
-      this.getInvoices()
+      this.getCustomers()
     },
-    remove (invoice) {
-      if (confirm('Do you really want to delete?')) {
-        removeInvoice(invoice).then(response => {
-          if (response.success) {
-            this.getInvoices()
-          }
-        })
-      }
+    view (customer) {
+      console.log(customer)
     }
   }
 }
