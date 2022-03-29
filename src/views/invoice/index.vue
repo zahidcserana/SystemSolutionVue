@@ -57,10 +57,7 @@
                       {{ row.for_date }}
                     </td>
                     <td>
-                      <span class="badge badge-dot mr-4">
-                        <i class="bg-warning"></i>
-                        <span class="status">{{ row.status }}</span>
-                      </span>
+                      <span :class="status[row.status]" class="badge badge-pill">{{ row.status }}</span>
                     </td>
                     <td class="text-right">
                       <button
@@ -101,6 +98,7 @@ import { customerList } from '@/api/customer'
 import { invoices, removeInvoice } from '@/api/invoice'
 import moment from 'moment'
 import { ref } from 'vue'
+import { invoice } from '@/models/status'
 
 export default {
   name: 'HelloWorld',
@@ -117,6 +115,7 @@ export default {
   },
   data () {
     return {
+      status: invoice,
       customers: null,
       invoices: [],
       term: '',
