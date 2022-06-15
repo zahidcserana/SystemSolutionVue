@@ -1,4 +1,4 @@
-const url = 'http://ss.aj/'
+const url = 'http://bms.prod/'
 const apiUrl = `${url}api/`
 
 export const config = {
