@@ -35,7 +35,7 @@
                   <tr v-for="(row, index) in invoices" :key="index">
                     <td class="budget">
                       <router-link :to="`/invoice/${row.id}`">{{
-                        index + 1
+                        row.id
                       }}</router-link>
                     </td>
                     <th scope="row">

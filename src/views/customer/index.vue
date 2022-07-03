@@ -2,9 +2,7 @@
   <Header>
     <template #sidelink>
       <div class="col-lg-6 col-5 text-right">
-        <router-link class="btn btn-sm btn-neutral" to="/customer/create"
-          >New</router-link
-        >
+        <router-link class="btn btn-sm btn-neutral" to="/customer/create">New</router-link>
         <a href="#" class="btn btn-sm btn-neutral">Edit</a>
       </div>
     </template>
@@ -36,7 +34,15 @@
                 </thead>
                 <tbody class="list">
                   <tr v-for="(row, index) in customers" :key="index">
-                    <td class="budget"><router-link :to="`/customer/${row.id}`">{{index + 1}}</router-link></td>
+                    <td class="budget">
+                      <router-link :to="`/customer/${row.id}`">
+                       <span class="btn-inner--icon">
+                          <i class="ni ni-active-40">
+                            &nbsp;{{index + 1}}
+                          </i>
+                        </span>
+                      </router-link>
+                    </td>
                     <td>{{ row.company_name }}</td>
                     <td>{{ row.name }}</td>
                     <td>{{ row.email }}</td>
@@ -50,13 +56,10 @@
                       </span>
                     </td>
                     <td class="text-right">
-                      <button
-                        class="btn btn-icon btn-info"
-                        @click="view(row)"
-                      >
-                        <span class="btn-inner--icon"
-                          ><i class="ni ni-user-run"></i
-                        ></span>
+                      <button class="btn btn-icon btn-info" @click="view(row)">
+                        <span class="btn-inner--icon">
+                          <i class="ni ni-user-run"></i>
+                        </span>
                       </button>
                     </td>
                   </tr>
@@ -65,14 +68,7 @@
             </div>
             <!-- Card footer -->
             <div class="card-footer py-4">
-              <v-pagination
-                class="pagination justify-content-end mb-0"
-                active-color="#5e72e4"
-                v-model="page"
-                :range-size="1"
-                :pages="pageCount"
-                @update:modelValue="updateHandler"
-              />
+              <v-pagination class="pagination justify-content-end mb-0" active-color="#5e72e4" v-model="page" :range-size="1" :pages="pageCount" @update:modelValue="updateHandler" />
             </div>
           </div>
         </div>
@@ -153,3 +149,8 @@ export default {
   }
 }
 </script>
+<style>
+.btn-link {
+  padding: 5%;
+}
+</style>
