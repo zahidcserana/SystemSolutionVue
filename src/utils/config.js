@@ -1,4 +1,4 @@
-const url = 'http://bms.prod/'
+const url = 'http://bms.local/'
 const apiUrl = `${url}api/`
 
 export const config = {

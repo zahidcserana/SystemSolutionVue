@@ -21,7 +21,7 @@
                 <div class="col-8">
                   <h3 class="mb-0">Due Invoices</h3>
                 </div>
-                <div class="col-4 text-right">
+                <div class="col-4 text-right" v-if="form.status !='adjusted'">
                   <button @click="adjust(form.id)" class="btn btn-sm btn-default float-right">Adjust</button>
                 </div>
               </div>
@@ -190,6 +190,7 @@
                           >Status</label
                         >
                         <span class="status">: {{ form.status }}</span>
+                        <span v-if="form.status =='advanced'" class="status"> ({{ form.dues }})</span>
                       </div>
                     </div>
                     <div class="col-lg-6">
@@ -216,7 +217,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="text-center">
+                  <div class="text-center" v-if="form.status !='adjusted'">
                     <Circle8 v-if="loading" />
                     <button
                       v-if="!loading"
