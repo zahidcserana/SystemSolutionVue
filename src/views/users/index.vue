@@ -88,7 +88,7 @@
                     >
                       <img
                         alt="Image placeholder"
-                        src="assets/img/theme/team-4.jpg"
+                        src="assets/img/theme/user.png"
                       />
                     </a>
                   </div>
@@ -200,7 +200,7 @@
                     >
                       <img
                         alt="Image placeholder"
-                        src="assets/img/theme/team-4.jpg"
+                        src="assets/img/theme/user.png"
                       />
                     </a>
                   </div>
@@ -310,7 +310,7 @@
                     >
                       <img
                         alt="Image placeholder"
-                        src="assets/img/theme/team-4.jpg"
+                        src="assets/img/theme/user.png"
                       />
                     </a>
                   </div>
@@ -422,7 +422,7 @@
                     >
                       <img
                         alt="Image placeholder"
-                        src="assets/img/theme/team-4.jpg"
+                        src="assets/img/theme/user.png"
                       />
                     </a>
                   </div>
@@ -534,7 +534,7 @@
                     >
                       <img
                         alt="Image placeholder"
-                        src="assets/img/theme/team-4.jpg"
+                        src="assets/img/theme/user.png"
                       />
                     </a>
                   </div>

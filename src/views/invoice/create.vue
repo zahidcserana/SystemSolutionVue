@@ -24,7 +24,7 @@
                 <div class="card-profile-image">
                   <a href="#">
                     <img
-                      src="assets/img/theme/team-4.jpg"
+                      src="assets/img/theme/user.png"
                       class="rounded-circle"
                     />
                   </a>
