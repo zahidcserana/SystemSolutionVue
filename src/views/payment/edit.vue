@@ -11,7 +11,8 @@
       </div>
     </template>
   </Header>
-  <Content>
+  <Loader :active="loaderActive" message="" />
+  <Content v-if="!loaderActive">
     <template #content>
       <div class="row">
         <div class="col-xl-4 order-xl-2">
@@ -218,14 +219,7 @@
                     </div>
                   </div>
                   <div class="text-center" v-if="form.status !='adjusted'">
-                    <Circle8 v-if="loading" />
-                    <button
-                      v-if="!loading"
-                      type="submit"
-                      class="btn btn-primary my-4"
-                    >
-                      Save
-                    </button>
+                    <button type="submit" class="btn btn-primary my-4">Save</button>
                   </div>
                 </div>
               </form>
@@ -245,9 +239,9 @@ import { updatePayment, payment, adjustPayment } from '@/api/payment'
 import Datepicker from '@vuepic/vue-datepicker'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-import { Circle8 } from 'vue-loading-spinner'
-// import { ref } from 'vue'
 import Alert from '@/components/Alert'
+import Loader from '../../components/Loader.vue'
+import loaderMixin from '../../../src/mixins/loader'
 
 export default {
   name: 'HelloWorld',
@@ -259,8 +253,9 @@ export default {
     Header,
     Content,
     Datepicker,
-    Circle8
+    Loader
   },
+  mixins: [loaderMixin],
   setup () {
     return {
       v$: useVuelidate()
@@ -268,7 +263,6 @@ export default {
   },
   data () {
     return {
-      loading: false,
       customers: null,
       search: '',
       dueInvoices: null,
@@ -350,19 +344,22 @@ export default {
       return myDate.getFullYear() + '-' + myMonth + '-' + myDay
     },
     adjust (id) {
+      this.showLoader()
+
       adjustPayment(id)
         .then(response => {
           if (response.success) {
             this.setData(response.data)
-            this.loading = false
             this.alert(null, response.message)
           } else {
-            this.loading = false
             this.alert(response.error)
           }
         })
+      this.hideLoader()
     },
     async submit () {
+      this.showLoader()
+
       this.form.payment_date = this.getDate(this.date)
       const result = await this.v$.$validate()
       if (result) {
@@ -370,19 +367,17 @@ export default {
           .then(response => {
             if (response.success) {
               this.setData(response.data)
-              this.loading = false
               this.alert(null, response.message)
             } else {
-              this.loading = false
               this.alert(response.error)
             }
           })
           .catch(err => {
-            this.loading = false
             console.log(err)
             this.alert('Something went wrong!')
           })
       }
+      this.hideLoader()
     },
     alert (error = null, success = null) {
       this.errorMsg = error

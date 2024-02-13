@@ -1,4 +1,4 @@
-const url = 'http://bill.local/'
+const url = 'http://account.alt/'
 const apiUrl = `${url}api/`
 
 export const config = {

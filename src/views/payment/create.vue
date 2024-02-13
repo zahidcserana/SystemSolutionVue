@@ -9,31 +9,23 @@
       </div>
     </template>
   </Header>
-  <Content>
+  <Loader :active="loaderActive" message="" />
+  <Content v-if="!loaderActive">
     <template #content>
       <div class="row">
         <div class="col-xl-4 order-xl-2">
           <div class="card card-profile">
-            <img
-              src="assets/img/theme/img-1-1000x600.jpg"
-              alt="Image placeholder"
-              class="card-img-top"
-            />
+            <img src="assets/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top" />
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
                   <a href="#">
-                    <img
-                      src="assets/img/theme/user.png"
-                      class="rounded-circle"
-                    />
+                    <img src="assets/img/theme/user.png" class="rounded-circle" />
                   </a>
                 </div>
               </div>
             </div>
-            <div
-              class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
-            >
+            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
               <div class="d-flex justify-content-between">
                 <a href="#" class="btn btn-sm btn-info  mr-4 ">Connect</a>
                 <a href="#" class="btn btn-sm btn-default float-right">Message</a>
@@ -97,16 +89,10 @@
                   <div class="row">
                     <div class="col-lg-6">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-username"
-                          >Customer</label
-                        >
+                        <label class="form-control-label" for="input-username">Customer</label>
                         <select class="form-control" v-model="form.customer_id">
                           <option value="">- Select -</option>
-                          <option
-                            v-for="option in customers"
-                            :value="option.id"
-                            :key="option.id"
-                          >
+                          <option v-for="option in customers" :value="option.id" :key="option.id">
                             {{ option.name }}
                           </option>
                         </select>
@@ -114,16 +100,10 @@
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-email"
-                          >Payment method</label
-                        >
+                        <label class="form-control-label" for="input-email">Payment method</label>
                         <select class="form-control" v-model="form.method">
                           <option value="">- Select -</option>
-                          <option
-                            v-for="(option, key) in method"
-                            :value="key"
-                            :key="key"
-                          >
+                          <option v-for="(option, key) in method" :value="key" :key="key">
                             {{ option }}
                           </option>
                         </select>
@@ -132,56 +112,26 @@
                   </div>
                   <div class="row">
                     <div class="col-lg-6">
-                      <div
-                        class="form-group"
-                        :class="{ error: v$.date.$errors.length }"
-                      >
-                        <label class="form-control-label" for="input-first-name"
-                          >Date</label
-                        >
+                      <div class="form-group" :class="{ error: v$.date.$errors.length }">
+                        <label class="form-control-label" for="input-first-name">Date</label>
                         <Datepicker v-model="date" :enableTimePicker="false" autoApply></Datepicker>
-                        <div
-                          class="input-errors"
-                          v-for="error of v$.date.$errors"
-                          :key="error.$uid"
-                        >
+                        <div class="input-errors" v-for="error of v$.date.$errors" :key="error.$uid">
                           <div class="error-msg">{{ error.$message }}</div>
                         </div>
                       </div>
                     </div>
                     <div class="col-lg-6">
-                      <div
-                        class="form-group"
-                        :class="{ error: v$.form.amount.$errors.length }"
-                      >
-                        <label class="form-control-label" for="input-last-name"
-                          >Amount</label
-                        >
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Amount"
-                          v-model="form.amount"
-                        />
-                        <div
-                          class="input-errors"
-                          v-for="error of v$.form.amount.$errors"
-                          :key="error.$uid"
-                        >
+                      <div class="form-group" :class="{ error: v$.form.amount.$errors.length }">
+                        <label class="form-control-label" for="input-last-name">Amount</label>
+                        <input type="number" class="form-control" placeholder="Amount" v-model="form.amount" />
+                        <div class="input-errors" v-for="error of v$.form.amount.$errors" :key="error.$uid">
                           <div class="error-msg">{{ error.$message }}</div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="text-center">
-                    <Circle8 v-if="loading" />
-                    <button
-                      v-if="!loading"
-                      type="submit"
-                      class="btn btn-primary my-4"
-                    >
-                      Save
-                    </button>
+                    <button type="submit" class="btn btn-primary my-4">Save</button>
                   </div>
                 </div>
               </form>
@@ -199,10 +149,10 @@ import Content from '@/views/layout/content.vue'
 import { customerList } from '@/api/customer'
 import { storePayment } from '@/api/payment'
 import { required } from '@vuelidate/validators'
-import { Circle8 } from 'vue-loading-spinner'
 import Alert from '@/components/Alert'
 import useVuelidate from '@vuelidate/core'
-// import { ref } from 'vue'
+import Loader from '../../components/Loader.vue'
+import loaderMixin from '../../../src/mixins/loader'
 
 export default {
   name: 'CreatePayment',
@@ -213,8 +163,9 @@ export default {
     Alert,
     Header,
     Content,
-    Circle8
+    Loader
   },
+  mixins: [loaderMixin],
   setup () {
     return {
       v$: useVuelidate()
@@ -222,7 +173,6 @@ export default {
   },
   data () {
     return {
-      loading: false,
       customers: null,
       search: '',
       method: {
@@ -240,9 +190,6 @@ export default {
       errorMsg: null,
       successMsg: null
     }
-  },
-  created () {
-    this.getCustomers()
   },
   validations () {
     return {
@@ -276,26 +223,25 @@ export default {
       return myDate.getFullYear() + '-' + myMonth + '-' + myDay
     },
     async submit () {
+      this.showLoader()
       this.form.payment_date = this.getDate(this.date)
       const result = await this.v$.$validate()
       if (result) {
         storePayment(this.form)
           .then(response => {
             if (response.success) {
-              this.loading = false
               this.alert(null, response.message)
               this.$router.push('/payment')
             } else {
-              this.loading = false
               this.alert(response.error)
             }
           })
           .catch(err => {
-            this.loading = false
             console.log(err)
             this.alert('Something went wrong!')
           })
       }
+      this.hideLoader()
     },
     alert (error = null, success = null) {
       this.errorMsg = error
@@ -305,6 +251,9 @@ export default {
         this.successMsg = null
       }, 2000)
     }
+  },
+  mounted () {
+    this.getCustomers()
   }
 }
 </script>

@@ -11,7 +11,8 @@
       </div>
     </template>
   </Header>
-  <Content>
+  <Loader :active="loaderActive" message="" />
+  <Content v-if="!loaderActive">
     <template #content>
       <div class="row">
         <div class="col-xl-4 order-xl-2">
@@ -147,14 +148,7 @@
                     </div>
                   </div>
                   <div class="text-center">
-                    <Circle8 v-if="loading" />
-                    <button
-                      v-if="!loading"
-                      type="submit"
-                      class="btn btn-primary my-4"
-                    >
-                      Save
-                    </button>
+                    <button type="submit" class="btn btn-primary my-4">Save</button>
                   </div>
                 </div>
               </form>
@@ -174,10 +168,11 @@ import { updateInvoice, invoice } from '@/api/invoice'
 import Datepicker from '@vuepic/vue-datepicker'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-import { Circle8 } from 'vue-loading-spinner'
 import { ref } from 'vue'
 import Alert from '@/components/Alert'
 import Info from '../customer/info.vue'
+import Loader from '../../components/Loader.vue'
+import loaderMixin from '../../../src/mixins/loader'
 
 export default {
   name: 'InvoiceEdit',
@@ -189,9 +184,10 @@ export default {
     Header,
     Content,
     Datepicker,
-    Circle8,
-    Info
+    Info,
+    Loader
   },
+  mixins: [loaderMixin],
   setup () {
     const month = ref({
       month: new Date().getMonth(),
@@ -204,7 +200,6 @@ export default {
   },
   data () {
     return {
-      loading: false,
       customers: null,
       customer: Object,
       search: '',
@@ -269,6 +264,8 @@ export default {
         })
     },
     async submit () {
+      this.showLoader()
+
       const myMonth = (this.month.month + 1).toLocaleString('en-US', {
         minimumIntegerDigits: 2,
         useGrouping: false
@@ -281,19 +278,17 @@ export default {
           .then(response => {
             if (response.success) {
               this.customer = response.data.customer
-              this.loading = false
               this.alert(null, response.message)
             } else {
-              this.loading = false
               this.alert(response.error)
             }
           })
           .catch(err => {
-            this.loading = false
             console.log(err)
             this.alert('Something went wrong!')
           })
       }
+      this.hideLoader()
     },
     alert (error = null, success = null) {
       this.errorMsg = error

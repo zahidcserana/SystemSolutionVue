@@ -1,5 +1,9 @@
 <template>
-  <div class="hello">
+  <div v-if="loaderActive" class="loader-page">
+    <loader :active="loaderActive" message="" />
+  </div>
+
+  <div v-if="!loaderActive" class="hello">
     <nav
       id="navbar-main"
       class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light"
@@ -250,14 +254,8 @@
                     </label>
                   </div>
                   <div class="text-center">
-                    <Circle8 v-if="loading" />
-                    <button
-                      v-if="!loading"
-                      type="submit"
-                      class="btn btn-primary my-4"
-                    >
-                      Sign in
-                    </button>
+                    <loader :active="loaderActive" message="" />
+                    <button v-if="!loaderActive" type="submit" class="btn btn-primary my-4">Sign in</button>
                   </div>
                 </form>
               </div>
@@ -343,18 +341,28 @@ import axios from 'axios'
 import { getToken } from '@/utils/auth'
 import useVuelidate from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
-import { Circle8 } from 'vue-loading-spinner'
 import { config } from '@/utils/config'
+import Loader from '../../components/Loader.vue'
+import loaderMixin from '../../../src/mixins/loader'
 
 const url = config.api_url
 
 export default {
   name: 'Login',
-  components: { Circle8 },
+  components: {
+    Loader
+  },
+  mixins: [loaderMixin],
   mounted () {
     if (getToken()) {
       this.$router.push('/')
     }
+
+    this.showLoader()
+    setTimeout(() => {
+      this.hideLoader()
+    }, 500)
+
     $(document).ready(function () {
       $('body').addClass('bg-default')
     })
@@ -380,6 +388,7 @@ export default {
   },
   methods: {
     async submitForm () {
+      this.showLoader()
       const result = await this.v$.$validate()
       if (result) {
         axios
@@ -406,6 +415,7 @@ export default {
             this.showError('Something went wrong!')
           })
       }
+      this.hideLoader()
     },
     showError (msg) {
       this.fetchError = msg
@@ -413,3 +423,8 @@ export default {
   }
 }
 </script>
+<style>
+.loader-page {
+  padding: 25%;
+}
+</style>
